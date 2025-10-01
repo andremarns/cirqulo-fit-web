@@ -33,7 +33,7 @@ class ApiService {
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
     
-    const defaultHeaders = {
+    const defaultHeaders: Record<string, string> = {
       'Content-Type': 'application/json',
     };
 
@@ -68,9 +68,15 @@ class ApiService {
         
         if (errorData.detail) {
           if (Array.isArray(errorData.detail)) {
-            errorMessage = errorData.detail.map((err: any) => err.msg || err.message || err).join(', ');
+            errorMessage = errorData.detail.map((err: unknown) => {
+              if (typeof err === 'object' && err !== null) {
+                const errorObj = err as Record<string, unknown>;
+                return errorObj.msg || errorObj.message || String(err);
+              }
+              return String(err);
+            }).join(', ');
           } else {
-            errorMessage = errorData.detail;
+            errorMessage = String(errorData.detail);
           }
         }
         
@@ -82,7 +88,7 @@ class ApiService {
       clearTimeout(timeoutId);
       console.error('API request failed:', error);
       
-      if (error.name === 'AbortError') {
+      if (error instanceof Error && error.name === 'AbortError') {
         throw new Error('Request timeout - servidor demorou para responder');
       }
       

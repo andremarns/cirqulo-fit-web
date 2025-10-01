@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { getLevelInfo, getLevelProgress } from '@/utils/levelSystem';
-import { workoutService, WorkoutStats } from '@/services/workoutService';
+import { workoutService } from '@/services/workoutService';
 
 export interface UserStats {
   level: number;

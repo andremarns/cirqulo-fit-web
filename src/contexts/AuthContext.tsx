@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const userData = await apiService.getCurrentUser();
           console.log('User data loaded:', userData);
           setUser(userData);
-        } catch (error) {
+        } catch {
           console.log('Token invalid, removing...');
           apiService.removeToken();
         }
@@ -63,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (name: string, email: string, password: string, gender: string) => {
     try {
-      const userData = await apiService.register({
+      await apiService.register({
         name,
         email,
         password,

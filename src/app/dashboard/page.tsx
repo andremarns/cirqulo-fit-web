@@ -5,7 +5,7 @@ import { useGamification } from "@/contexts/GamificationContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Dumbbell, Plus, Trophy, Star, Target, Zap, TrendingUp, Calendar } from "lucide-react";
+import { Dumbbell, Plus, Trophy, Star, Target, Zap, TrendingUp } from "lucide-react";
 import { workoutService, DashboardData } from "@/services/workoutService";
 import { Header } from "@/components/Header";
 import { PageTransition } from "@/components/animations/PageTransition";
@@ -18,7 +18,7 @@ import { XPGuide } from "@/components/XPGuide";
 import { motion } from "framer-motion";
 
 export default function DashboardPage() {
-  const { user, logout, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const { stats } = useGamification();
   const { addNotification } = useNotifications();
   const router = useRouter();
@@ -188,7 +188,10 @@ export default function DashboardPage() {
           {/* Weekly Calendar */}
           <div className="mb-8">
             <WeeklyCalendar
-              data={dashboardData?.calendar_data || []}
+              data={dashboardData?.calendar_data?.map(day => ({
+                ...day,
+                isToday: day.is_today
+              })) || []}
               onDayClick={(day) => {
                 addNotification({
                   type: 'info',

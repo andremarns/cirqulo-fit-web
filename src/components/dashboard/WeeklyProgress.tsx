@@ -74,7 +74,7 @@ export function WeeklyProgress({ data, totalSessions, weeklyGoal, onShare }: Wee
 
       {/* Weekly Calendar */}
       <div className="grid grid-cols-7 gap-2 mb-6">
-        {data.map((day, index) => (
+        {data.map((day) => (
           <motion.button
             key={day.day}
             onClick={() => setSelectedDay(selectedDay === day.day ? null : day.day)}

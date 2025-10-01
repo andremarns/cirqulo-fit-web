@@ -7,7 +7,7 @@ import { Header } from '@/components/Header';
 import { PageTransition } from '@/components/animations/PageTransition';
 import { LoadingSpinner } from '@/components/animations/LoadingSpinner';
 import { useNotifications } from '@/contexts/NotificationContext';
-import { useGamification } from '@/contexts/GamificationContext';
+// import { useGamification } from '@/contexts/GamificationContext'; // TODO: Implementar funcionalidade de completar treino
 import { motion } from 'framer-motion';
 
 interface Exercise {
@@ -21,7 +21,7 @@ interface Exercise {
 export default function CreateWorkoutPage() {
   const router = useRouter();
   const { addNotification } = useNotifications();
-  const { completeWorkout } = useGamification();
+  // const { completeWorkout } = useGamification(); // TODO: Implementar funcionalidade de completar treino
   const [isCreating, setIsCreating] = useState(false);
   const [workoutName, setWorkoutName] = useState('');
   const [workoutDescription, setWorkoutDescription] = useState('');

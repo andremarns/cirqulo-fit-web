@@ -22,7 +22,7 @@ export default function MyWorkoutsPage() {
   const router = useRouter();
   const { stats } = useGamification();
   const [workouts, setWorkouts] = useState<WorkoutDisplay[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     const loadWorkouts = async () => {
@@ -45,7 +45,7 @@ export default function MyWorkoutsPage() {
             unlocked: workout.level <= stats.level,
           })),
           ...availableWorkouts.map(workout => ({
-            id: workout.id,
+            id: parseInt(workout.id),
             name: workout.name,
             description: workout.description,
             category: workout.category,
@@ -70,7 +70,7 @@ export default function MyWorkoutsPage() {
         // Fallback para treinos evolutivos apenas
         const availableWorkouts = getAllAvailableWorkouts(stats.level);
         const workoutList: WorkoutDisplay[] = availableWorkouts.map(workout => ({
-          id: workout.id,
+          id: parseInt(workout.id),
           name: workout.name,
           description: workout.description,
           category: workout.category,
@@ -96,7 +96,7 @@ export default function MyWorkoutsPage() {
     loadWorkouts();
   }, [stats.level]);
 
-  const handleStartWorkout = (workout: Workout) => {
+  const handleStartWorkout = (workout: WorkoutDisplay) => {
     if (!workout.unlocked) return;
     // Simular início do treino
     router.push(`/dashboard/workout/${workout.id}`);

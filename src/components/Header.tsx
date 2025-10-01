@@ -39,7 +39,7 @@ export function Header() {
             {/* User Info */}
             <div className="flex items-center space-x-2">
               <User className="h-5 w-5 text-muted-foreground" />
-              <span className="text-foreground">{user.name}</span>
+              <span className="text-foreground">{user?.name}</span>
             </div>
 
             {/* Logout */}
@@ -79,7 +79,7 @@ export function Header() {
             <div className="flex items-center space-x-3">
               <User className="h-5 w-5 text-muted-foreground" />
               <div>
-                <p className="text-foreground font-medium">{user.name}</p>
+                <p className="text-foreground font-medium">{user?.name}</p>
                 <p className="text-sm text-muted-foreground">Nível {stats.level}</p>
               </div>
             </div>

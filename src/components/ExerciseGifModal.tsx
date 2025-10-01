@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { X, Play, Pause, RotateCcw, Loader2 } from 'lucide-react';
 import { gifService, GifData } from '@/services/gifService';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 interface ExerciseGifModalProps {
   isOpen: boolean;
@@ -17,13 +18,7 @@ export function ExerciseGifModal({ isOpen, onClose, exerciseName }: ExerciseGifM
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  useEffect(() => {
-    if (isOpen && exerciseName) {
-      loadGifs();
-    }
-  }, [isOpen, exerciseName]);
-
-  const loadGifs = async () => {
+  const loadGifs = useCallback(async () => {
     setIsLoading(true);
     try {
       const gifData = await gifService.searchExerciseGifs(exerciseName, 5);
@@ -34,7 +29,13 @@ export function ExerciseGifModal({ isOpen, onClose, exerciseName }: ExerciseGifM
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [exerciseName]);
+
+  useEffect(() => {
+    if (isOpen && exerciseName) {
+      loadGifs();
+    }
+  }, [isOpen, exerciseName, loadGifs]);
 
   const nextGif = () => {
     setCurrentGifIndex((prev) => (prev + 1) % gifs.length);
@@ -98,7 +99,7 @@ export function ExerciseGifModal({ isOpen, onClose, exerciseName }: ExerciseGifM
             ) : gifs.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">
-                  Nenhuma demonstração encontrada para "{exerciseName}"
+                  Nenhuma demonstração encontrada para &quot;{exerciseName}&quot;
                 </p>
                 <button
                   onClick={loadGifs}
@@ -111,10 +112,13 @@ export function ExerciseGifModal({ isOpen, onClose, exerciseName }: ExerciseGifM
               <div className="space-y-4">
                 {/* GIF Display */}
                 <div className="relative bg-muted rounded-lg overflow-hidden">
-                  <img
-                    src={currentGif?.url}
-                    alt={currentGif?.title}
+                  <Image
+                    src={currentGif?.url || ''}
+                    alt={currentGif?.title || 'Exercise demonstration'}
+                    width={400}
+                    height={256}
                     className={`w-full h-64 object-cover ${isPlaying ? 'animate-pulse' : ''}`}
+                    unoptimized
                   />
                   
                   {/* Play/Pause Overlay */}
@@ -185,10 +189,13 @@ export function ExerciseGifModal({ isOpen, onClose, exerciseName }: ExerciseGifM
                           : 'border-border hover:border-primary/50'
                       }`}
                     >
-                      <img
+                      <Image
                         src={gif.preview}
                         alt={gif.title}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                     </motion.button>
                   ))}

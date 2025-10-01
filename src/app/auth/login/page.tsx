@@ -39,11 +39,12 @@ export default function LoginPage() {
         title: 'Login realizado!',
         message: 'Bem-vindo de volta!',
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Credenciais inválidas';
       addNotification({
         type: 'error',
         title: 'Erro no login',
-        message: error.message || 'Credenciais inválidas',
+        message: errorMessage,
       });
     } finally {
       setIsLoading(false);

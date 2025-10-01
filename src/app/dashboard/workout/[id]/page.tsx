@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Play, Pause, SkipForward, CheckCircle, Clock, Target, Trophy, Video } from 'lucide-react';
+import { ArrowLeft, Play, CheckCircle, Clock, Target, Trophy, Video } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { PageTransition } from '@/components/animations/PageTransition';
 import { LoadingSpinner } from '@/components/animations/LoadingSpinner';
@@ -160,7 +160,7 @@ export default function WorkoutSessionPage({ params }: { params: { id: string } 
     
     try {
       // Iniciar sessão na API
-      const apiSession = await workoutService.startWorkoutSession(parseInt(id));
+      const apiSession = await workoutService.startWorkoutSession(parseInt(params.id));
       setSessionId(apiSession.id);
       
       setSession({
@@ -198,7 +198,7 @@ export default function WorkoutSessionPage({ params }: { params: { id: string } 
         updatedSession.currentSet += 1;
         
         // Registrar exercício na API se for a primeira série
-        if (updatedSession.currentSet === 1) {
+        if (updatedSession.currentSet === 1 && sessionId) {
           await workoutService.addExerciseToSession(sessionId, {
             exercise_name: currentEx.name,
             sets: currentEx.sets,
@@ -208,7 +208,7 @@ export default function WorkoutSessionPage({ params }: { params: { id: string } 
         }
         
         // Atualizar progresso na API
-        await workoutService.updateExerciseProgress(currentEx.id, updatedSession.currentSet);
+        await workoutService.updateExerciseProgress(parseInt(currentEx.id), updatedSession.currentSet);
         
         // XP por completar uma série
         addXP(5);
@@ -259,7 +259,9 @@ export default function WorkoutSessionPage({ params }: { params: { id: string } 
     
     try {
       // Completar sessão na API
-      await workoutService.completeWorkoutSession(sessionId);
+      if (sessionId) {
+        await workoutService.completeWorkoutSession(sessionId);
+      }
       
       const duration = session.startTime ? 
         Math.floor((new Date().getTime() - session.startTime.getTime()) / 1000 / 60) : 0;

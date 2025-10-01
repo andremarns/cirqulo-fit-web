@@ -14,7 +14,7 @@ const registerSchema = z.object({
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   confirmPassword: z.string(),
   gender: z.enum(["male", "female", "other"], {
-    required_error: "Selecione seu gênero",
+    message: "Selecione seu gênero",
   }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Senhas não coincidem",
@@ -43,8 +43,9 @@ export default function RegisterPage() {
     setError("");
     try {
       await registerUser(data.name, data.email, data.password, data.gender);
-    } catch (error: any) {
-      setError(error.message || "Erro ao criar conta");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Erro ao criar conta";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
