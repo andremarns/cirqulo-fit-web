@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { GamificationProvider } from "@/contexts/GamificationContext";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
+import ThemeStatusBar from "@/components/ThemeStatusBar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -82,7 +83,7 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "CirquloFit",
     startupImage: [
       {
@@ -95,7 +96,8 @@ export const metadata: Metadata = {
     "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "black-translucent",
-    "msapplication-TileColor": "#3b82f6",
+    "theme-color": "#0f172a",
+    "msapplication-TileColor": "#0f172a",
     "msapplication-config": "/browserconfig.xml",
   },
 };
@@ -108,6 +110,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <head>
+        <meta name="theme-color" content="#0f172a" />
+        <meta name="msapplication-navbutton-color" content="#0f172a" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -133,6 +139,7 @@ export default function RootLayout({
           <NotificationProvider>
             <GamificationProvider>
               <AuthProvider>
+                <ThemeStatusBar />
                 {children}
                 <PWAInstallPrompt />
               </AuthProvider>
