@@ -8,11 +8,11 @@ export interface GifData {
 }
 
 class GifService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
   async searchExerciseGifs(exerciseName: string, limit: number = 5): Promise<GifData[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/gifs/search?exercise=${encodeURIComponent(exerciseName)}&limit=${limit}`);
+      const response = await fetch(`${this.baseUrl}/api/gifs/search?exercise=${encodeURIComponent(exerciseName)}&limit=${limit}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -28,7 +28,7 @@ class GifService {
 
   async getTrendingWorkoutGifs(limit: number = 10): Promise<GifData[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/gifs/trending?limit=${limit}`);
+      const response = await fetch(`${this.baseUrl}/api/gifs/trending?limit=${limit}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

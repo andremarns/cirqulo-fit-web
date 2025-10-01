@@ -169,7 +169,7 @@ class WorkoutService {
 
   async getWorkouts(level?: number): Promise<Workout[]> {
     const params = level ? `?level=${level}` : '';
-    return this.request<Workout[]>(`/api/workouts/${params}`);
+    return this.request<Workout[]>(`/api/workouts${params}`);
   }
 
   async createWorkout(workoutData: {
@@ -192,7 +192,7 @@ class WorkoutService {
       method: 'POST',
       body: JSON.stringify({
         workout_id: workoutId,
-        started_at: new Date().toISOString(),
+        started_at: new Date().toISOString()
       }),
     });
   }
@@ -216,10 +216,14 @@ class WorkoutService {
   }
 
   async updateExerciseProgress(exerciseId: number, completedSets: number): Promise<WorkoutExercise> {
-    return this.request<WorkoutExercise>(`/api/workouts/exercises/${exerciseId}/progress`, {
+    return this.request<WorkoutExercise>(`/api/workouts/sessions/exercises/${exerciseId}/progress`, {
       method: 'PATCH',
       body: JSON.stringify({ completed_sets: completedSets }),
     });
+  }
+
+  async getSessionExercises(sessionId: number): Promise<WorkoutExercise[]> {
+    return this.request<WorkoutExercise[]>(`/api/workouts/sessions/${sessionId}/exercises`);
   }
 
   async getWeeklyProgress(): Promise<WeeklyProgress> {
@@ -227,12 +231,13 @@ class WorkoutService {
   }
 
   async getWorkoutStats(): Promise<WorkoutStats> {
-    return this.request<WorkoutStats>('/api/workouts/stats');
+    return this.request<WorkoutStats>('/api/workouts/stats/summary');
   }
 
   async getDashboardData(): Promise<DashboardData> {
-    return this.request<DashboardData>('/api/workouts/dashboard');
+    return this.request<DashboardData>('/api/workouts/dashboard/');
   }
+
 }
 
 export const workoutService = new WorkoutService();
