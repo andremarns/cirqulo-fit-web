@@ -133,7 +133,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${poppins.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${poppins.variable} font-poppins antialiased bg-background text-foreground`}
       >
         <ThemeProvider>
           <NotificationProvider>

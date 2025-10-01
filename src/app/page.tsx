@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Dumbbell, Target, TrendingUp, Timer, Users } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { FontTest } from "@/components/FontTest";
 
 export default function Home() {
   return (
@@ -34,9 +33,6 @@ export default function Home() {
       </nav>
 
       <main>
-        {/* Teste da Fonte - Remover após verificação */}
-        <FontTest />
-        
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center">
