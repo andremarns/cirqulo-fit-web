@@ -26,7 +26,7 @@ export default function PWAInstallPrompt() {
       }
       
       // Verificar se está em modo standalone no iOS
-      if ((window.navigator as any).standalone === true) {
+      if ('standalone' in window.navigator && (window.navigator as { standalone?: boolean }).standalone === true) {
         setIsInstalled(true);
         return;
       }
